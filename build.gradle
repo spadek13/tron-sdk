@@ -28,6 +28,14 @@ repositories {
 //        url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
     mavenCentral()
+
+    maven {
+        url  "https://spade-k.bintray.com/spadek13"
+        credentials {
+            username 'spadek13'
+            password '<API_KEY>'//请根据实际修改
+        }
+    }
 }
 dependencies {
     // 添加项目依赖，这里添加了selenium
