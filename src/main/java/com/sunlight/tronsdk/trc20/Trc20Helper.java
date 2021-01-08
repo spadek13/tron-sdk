@@ -3,13 +3,11 @@ package com.sunlight.tronsdk.trc20;
 import com.alibaba.fastjson.JSONObject;
 import com.sunlight.tronsdk.SdkConfig;
 import com.sunlight.tronsdk.address.AddressHelper;
-import com.sunlight.tronsdk.context.HttpContext;
-import com.sunlight.tronsdk.transaction.TransactionSender;
 import com.sunlight.tronsdk.transaction.TransactionResult;
+import com.sunlight.tronsdk.transaction.TransactionSender;
 import com.sunlight.tronsdk.utils.TokenConverter;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import okhttp3.MediaType;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -40,7 +38,7 @@ public class Trc20Helper {
         return TransactionResult.parse(result);
     }
 
-    public static BigDecimal balanceOf(String ownerAddress,  String contractAddress) throws Exception {
+    public static BigDecimal balanceOf(String ownerAddress, String contractAddress) throws Exception {
         String method = "balanceOf(address)";
         String response = triggerSmartContract(
                 contractAddress,
@@ -49,7 +47,7 @@ public class Trc20Helper {
                 "0000000000000000000000" + AddressHelper.toHexString(ownerAddress));
         JSONObject result = JSONObject.parseObject(response);
         String hexValue = result.getJSONArray("constant_result").getString(0);
-        return TokenConverter.tokenHexValueToBigDecimal(hexValue, decimals(ownerAddress,contractAddress));
+        return TokenConverter.tokenHexValueToBigDecimal(hexValue, decimals(ownerAddress, contractAddress));
     }
 
     public static Integer decimals(String ownerAddress, String contractAddress) throws Exception {
@@ -65,6 +63,7 @@ public class Trc20Helper {
     }
 
     private static String triggerSmartContract(String contractAddress, String method, String ownerAddress, String parameter) throws Exception {
+        String route = "/wallet/triggersmartcontract";
         Map<String, String> params = new HashMap<>();
         String hexOwnerAddress = AddressHelper.toHexString(ownerAddress);
         String hexContractAddress = AddressHelper.toHexString(contractAddress);
@@ -72,14 +71,23 @@ public class Trc20Helper {
         params.put("function_selector", method);
         params.put("parameter", parameter);
         params.put("owner_address", hexOwnerAddress);
-        try {
-            HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-            String route = "/wallet/triggersmartcontract";
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(JSONObject.toJSONString(params))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
+//        try {
+//            HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
+//            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
+//                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
+//            return responseEntity.getBody();
+//        } catch (Exception e) {
+//            throw e;
+//        }
     }
 }

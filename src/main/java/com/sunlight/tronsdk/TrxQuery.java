@@ -3,12 +3,9 @@ package com.sunlight.tronsdk;
 import com.alibaba.fastjson.JSONObject;
 import com.sunlight.tronsdk.address.AccountResource;
 import com.sunlight.tronsdk.address.AddressHelper;
-import com.sunlight.tronsdk.constant.CoinConstant;
-import com.sunlight.tronsdk.context.HttpContext;
 import com.sunlight.tronsdk.utils.TokenConverter;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import okhttp3.MediaType;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -32,89 +29,93 @@ public class TrxQuery {
      * @throws Exception 异常
      */
     public static String getLatestBlock() throws Exception {
-        HttpEntity<Object> httpEntity = new HttpEntity<>(HttpContext.standardHeaders);
         String route = "/wallet/getnowblock";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
     }
 
     public static String getBlockByHeight(BigInteger height) throws Exception {
+        String route = "/wallet/getblockbynum";
+
         Map<String, BigInteger> params = new HashMap<>();
         params.put("num", height);
-        HttpEntity<Map<String, BigInteger>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/getblockbynum";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
     }
 
     public static String getTransactionById(String transactionId) throws Exception {
+        String route = "/wallet/gettransactionbyid";
         Map<String, String> params = new HashMap<>();
         params.put("value", transactionId);
-        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/gettransactionbyid";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
     }
 
     public static String getTransactionInfoById(String transactionId) throws Exception {
+        String route = "/wallet/gettransactioninfobyid";
+
         Map<String, String> params = new HashMap<>();
         params.put("value", transactionId);
-        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/gettransactioninfobyid";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
     }
 
     public static AccountResource getAccountResource(String address) throws Exception {
+        String route = "/wallet/getaccountresource";
         Map<String, String> params = new HashMap<>();
         params.put("address", AddressHelper.toHexString(address));
-        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/getaccountresource";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            JSONObject result = JSONObject.parseObject(responseEntity.getBody());
-            Long freeNetUsed = result.getLong("freeNetUsed");
-            Long freeNetLimit = result.getLong("freeNetLimit");
-            Long energyUsed = result.getLong("EnergyUsed");
-            Long energyLimit = result.getLong("EnergyLimit");
-            Long totalNetLimit = result.getLong("TotalNetLimit");
-            Long totalNetWeight = result.getLong("TotalNetWeight");
-            Long totalEnergyLimit = result.getLong("TotalEnergyLimit");
-            Long totalEnergyWeight = result.getLong("TotalEnergyWeight");
-            return new AccountResource(
-                    freeNetUsed == null ? 0L : freeNetUsed,
-                    freeNetLimit == null ? 0L : freeNetLimit,
-                    energyUsed == null ? 0L : energyUsed,
-                    energyLimit == null ? 0L : energyLimit,
-                    totalNetLimit == null ? 0L : totalNetLimit,
-                    totalNetWeight == null ? 0L : totalNetWeight,
-                    totalEnergyLimit == null ? 0L : totalEnergyLimit,
-                    totalEnergyWeight == null ? 0L : totalEnergyWeight
-            );
-        } catch (Exception e) {
-            throw e;
-        }
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        JSONObject result = JSONObject.parseObject(rp);
+        Long freeNetUsed = result.getLong("freeNetUsed");
+        Long freeNetLimit = result.getLong("freeNetLimit");
+        Long energyUsed = result.getLong("EnergyUsed");
+        Long energyLimit = result.getLong("EnergyLimit");
+        Long totalNetLimit = result.getLong("TotalNetLimit");
+        Long totalNetWeight = result.getLong("TotalNetWeight");
+        Long totalEnergyLimit = result.getLong("TotalEnergyLimit");
+        Long totalEnergyWeight = result.getLong("TotalEnergyWeight");
+        return new AccountResource(
+                freeNetUsed == null ? 0L : freeNetUsed,
+                freeNetLimit == null ? 0L : freeNetLimit,
+                energyUsed == null ? 0L : energyUsed,
+                energyLimit == null ? 0L : energyLimit,
+                totalNetLimit == null ? 0L : totalNetLimit,
+                totalNetWeight == null ? 0L : totalNetWeight,
+                totalEnergyLimit == null ? 0L : totalEnergyLimit,
+                totalEnergyWeight == null ? 0L : totalEnergyWeight
+        );
     }
 
     /**
@@ -166,22 +167,24 @@ public class TrxQuery {
     }
 
     public static BigDecimal getTrxBalance(String address) throws Exception {
+        String route = "/wallet/getaccount";
         Map<String, Object> params = new HashMap<>();
         params.put("address", address);
         params.put("visible", true);
-        HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/getaccount";
-        try {
-            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            JSONObject body = JSONObject.parseObject(responseEntity.getBody());
-            if (body.isEmpty()) {
-                return BigDecimal.ZERO;
-            } else {
-                return TokenConverter.tokenBigIntegerToBigDecimal(body.getBigInteger("balance"), TRX_DECIMAL);
-            }
-        } catch (Exception e) {
-            throw e;
+
+
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build()
+                .execute()
+                .body()
+                .string();
+        JSONObject body = JSONObject.parseObject(rp);
+        if (body.isEmpty()) {
+            return BigDecimal.ZERO;
+        } else {
+            return TokenConverter.tokenBigIntegerToBigDecimal(body.getBigInteger("balance"), TRX_DECIMAL);
         }
     }
 

@@ -1,19 +1,17 @@
 package com.sunlight.tronsdk.transaction;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sunlight.tronsdk.context.HttpContext;
 import com.sunlight.tronsdk.SdkConfig;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import okhttp3.MediaType;
 import org.tron.common.crypto.ECKey;
 import org.tron.common.crypto.Sha256Sm3Hash;
 import org.tron.common.utils.ByteArray;
 import org.tron.protos.Protocol;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,18 +60,32 @@ public class TransactionSender {
      * @param signedTransactionBytes 交易数据
      * @return 交易广播结果
      */
-    private static String broadcast(byte[] signedTransactionBytes){
+    private static String broadcast(byte[] signedTransactionBytes) throws IOException {
         String signedDataStr = ByteArray.toHexString(signedTransactionBytes);
+        String route = "/wallet/broadcasthex";
+
         Map<String, String> params = new HashMap<>(1);
         params.put("transaction", signedDataStr);
-        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-        String route = "/wallet/broadcasthex";
-        ResponseEntity<String> responseEntity;
-        try {
-            responseEntity = HttpContext.restTemplate.exchange(SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-            return responseEntity.getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+
+        String rp = OkHttpUtils.postString()
+                .url(SdkConfig.getInstance().getNodeServer() + route)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(JSONObject.toJSONString(params))
+                .build()
+                .execute()
+                .body()
+                .string();
+        return rp;
+//        Map<String, String> params = new HashMap<>(1);
+//        params.put("transaction", signedDataStr);
+//        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
+//        String route = "/wallet/broadcasthex";
+//        ResponseEntity<String> responseEntity;
+//        try {
+//            responseEntity = HttpContext.restTemplate.exchange(SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
+//            return responseEntity.getBody();
+//        } catch (Exception e) {
+//            throw e;
+//        }
     }
 }
