@@ -76,16 +76,5 @@ public class TransactionSender {
                 .body()
                 .string();
         return rp;
-//        Map<String, String> params = new HashMap<>(1);
-//        params.put("transaction", signedDataStr);
-//        HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-//        String route = "/wallet/broadcasthex";
-//        ResponseEntity<String> responseEntity;
-//        try {
-//            responseEntity = HttpContext.restTemplate.exchange(SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-//            return responseEntity.getBody();
-//        } catch (Exception e) {
-//            throw e;
-//        }
     }
 }

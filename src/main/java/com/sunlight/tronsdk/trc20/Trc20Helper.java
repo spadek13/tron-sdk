@@ -81,13 +81,5 @@ public class Trc20Helper {
                 .body()
                 .string();
         return rp;
-//        try {
-//            HttpEntity<Map<String, String>> httpEntity = new HttpEntity<>(params, HttpContext.standardHeaders);
-//            ResponseEntity<String> responseEntity = HttpContext.restTemplate.exchange(
-//                    SdkConfig.getInstance().getNodeServer() + route, HttpMethod.POST, httpEntity, String.class);
-//            return responseEntity.getBody();
-//        } catch (Exception e) {
-//            throw e;
-//        }
     }
 }
