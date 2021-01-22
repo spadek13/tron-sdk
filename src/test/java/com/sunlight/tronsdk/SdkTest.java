@@ -28,7 +28,7 @@ public class SdkTest {
     @Test
     @Before
     public void setup() {
-        SdkConfig.getInstance().setNodeServer("http://52.53.189.99:8090");
+//        SdkConfig.getInstance().setNodeServer("http://52.53.189.99:8090");
     }
 
     /**
@@ -90,7 +90,7 @@ public class SdkTest {
     @Test
     public void trc20BalanceOfTest() throws Exception {
         BigDecimal balance = Trc20Helper.balanceOf(
-                "TT7bh9H6o8hVXXQ4L3q5Cp17LASmW9ud2y",
+                "TQTMPAEz9qZhX6qtGZt1btnBeQvhtLqNWm",
                 "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
         );
         LOGGER.info("balance:" + balance);
@@ -105,7 +105,7 @@ public class SdkTest {
     @Test
     public void trc20DecimalTest() throws Exception {
         Integer decimals = Trc20Helper.decimals(
-                "TT7bh9H6o8hVXXQ4L3q5Cp17LASmW9ud2y",
+                "TQTMPAEz9qZhX6qtGZt1btnBeQvhtLqNWm",
                 "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
         );
         LOGGER.info("decimals:" + decimals);

@@ -21,6 +21,8 @@ public class AddressTest {
         Address address = AddressHelper.newAddress();
         LOGGER.info(JSON.toJSONString(address));
         AddressHelper.decodeFromBase58Check("TYCw2XSJuQKWtqNMme4XQJX8MgtZ1R4Xwb");
+        String addr =AddressHelper.privateKeyToBase58Address("83d8c98e422d73f035dc21543bce6ce7593830202715a2440553c65bbf55e4a0");
+
         assertNotNull(address);
         assertNotNull(address.getAddress());
         assertNotNull(address.getPrivateKey());

@@ -30,11 +30,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url  "https://spade-k.bintray.com/spadek13"
-        credentials {
-            username 'spadek13'
-            password '3c4ef316230c4be0417f5a8a702d7a0aac03dd71'//请根据实际修改
-        }
+        url  "https://spade-k.bintray.com/sp13"
     }
 }
 dependencies {
@@ -46,7 +42,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 //    compile fileTree(dir: 'src/main/libs', includes: ['*.jar'])
-    implementation 'com.spadek13:tron-cli:0.1.3'
+    implementation 'com.spadek13:tron-cli:0.1.4'
     implementation 'com.reizx:okhttputils:3.2.3'
 }
 
@@ -86,7 +82,7 @@ apply plugin: 'com.novoda.bintray-release'
 // 加上 -x test 跳过单元测试
 //gradlew clean build -x test bintrayUpload -PbintrayUser=XXX -PbintrayKey=BINTRAY_KEY -PdryRun=false
 publish {
-    repoName = 'spadek13'
+    repoName = 'sp13'
     userOrg = 'spade-k'//bintray.com用户名
     groupId = 'com.spadek13'//jcenter上的路径
     artifactId = 'tron-sdk'//项目名称
