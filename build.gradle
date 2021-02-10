@@ -30,7 +30,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url  "https://spade-k.bintray.com/sp13"
+        url  "https://dl.bintray.com/sp13k/sp13kr"
     }
 }
 dependencies {
