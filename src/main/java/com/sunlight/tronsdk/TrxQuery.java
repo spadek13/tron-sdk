@@ -31,9 +31,8 @@ public class TrxQuery {
     public static String getLatestBlock() throws Exception {
         String route = "/wallet/getnowblock";
 
-        String rp = OkHttpUtils.postString()
+        String rp = OkHttpUtils.get()
                 .url(SdkConfig.getInstance().getNodeServer() + route)
-                .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute()
                 .body()
