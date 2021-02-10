@@ -82,8 +82,8 @@ apply plugin: 'com.novoda.bintray-release'
 // 加上 -x test 跳过单元测试
 //gradlew clean build -x test bintrayUpload -PbintrayUser=XXX -PbintrayKey=BINTRAY_KEY -PdryRun=false
 publish {
-    repoName = 'sp13'
-    userOrg = 'spade-k'//bintray.com用户名
+    repoName = 'sp13kr'
+    userOrg = 'sp13k'//bintray.com用户名
     groupId = 'com.spadek13'//jcenter上的路径
     artifactId = 'tron-sdk'//项目名称
     publishVersion = '0.1.5' //版本号
