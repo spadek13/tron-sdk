@@ -42,7 +42,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 //    compile fileTree(dir: 'src/main/libs', includes: ['*.jar'])
-    implementation 'com.spadek13:tron-cli:0.1.4'
+    implementation 'com.spadek13:tron-cli:0.1.5'
     implementation 'com.reizx:okhttputils:3.2.3'
 }
 
@@ -86,7 +86,7 @@ publish {
     userOrg = 'sp13k'//bintray.com用户名
     groupId = 'com.spadek13'//jcenter上的路径
     artifactId = 'tron-sdk'//项目名称
-    publishVersion = '0.1.5' //版本号
+    publishVersion = '0.1.6' //版本号
     desc = 'an tron wallet lib'
     website = 'https://github.com/spadek13/tron-sdk.git'
 }
